@@ -25,6 +25,17 @@ export async function getStaticProps({ params }) {
 
   const { items } = await client.getEntries({ content_type: 'recipe', 'fields.slug': params.slug })
 
+  // Conditional Redirects
+  if(!items.length){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  // Assign to props
   return {
     props: { recipe: items[0] },
     revalidate: 2
